@@ -1,0 +1,11 @@
+# Fichiers sources fournis (photos originales, logo, polices) : jamais commités
+_sources/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
