@@ -1,1 +1,233 @@
-/* Galerie Dédal des Couleurs — feuille de style principale (mobile-first) */
+/* ==========================================================================
+   Galerie Dédal des Couleurs — feuille de style principale
+   Approche mobile-first : styles de base pour smartphone (390 px),
+   puis @media (min-width: …) pour les écrans plus larges.
+   ========================================================================== */
+
+/* ---------- Polices locales ---------- */
+@font-face {
+  font-family: "Glacial Indifference";
+  src: url("../fonts/GlacialIndifference-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Glacial Indifference";
+  src: url("../fonts/GlacialIndifference-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Variables de la charte ---------- */
+:root {
+  --fond-page: #EEE6E6;
+  --fond-carte: #FFFFFF;
+  --fond-sombre: #000000;
+  --accent: #82B555;
+  --texte: #000000;
+  --texte-secondaire: #2B2B2B;
+  --texte-discret: #5C5C5C;
+  --texte-sur-fonce: #FFFFFF;
+  --bordure: #D9CFCF;
+  --overlay-hero: rgba(238, 230, 230, 0.55);
+  --overlay-menu: rgba(0, 0, 0, 0.55);
+
+  --police-titre: "Freckle Face", "Glacial Indifference", cursive;
+  --police-texte: "Glacial Indifference", "Century Gothic", Arial, sans-serif;
+
+  --hauteur-header: 64px;
+  --marge-laterale: 20px;
+  --espace-section: 48px;
+}
+
+/* ---------- Remise à zéro ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fond-page);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+figure,
+address {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+address {
+  font-style: normal;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ---------- Typographie ---------- */
+h1,
+h2,
+h3 {
+  font-family: var(--police-titre);
+  font-weight: 400;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 1.6rem + 2.667vw, 4rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 1.379rem + 1.524vw, 2.75rem);
+}
+
+h3 {
+  font-size: clamp(1.625rem, 1.393rem + 0.952vw, 2.25rem);
+}
+
+p {
+  font-size: clamp(1rem, 0.954rem + 0.19vw, 1.125rem);
+}
+
+.sur-titre {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.texte-secondaire {
+  color: var(--texte-secondaire);
+}
+
+/* ---------- Mise en page générale ---------- */
+.conteneur {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--marge-laterale);
+}
+
+.section {
+  padding-block: var(--espace-section);
+  scroll-margin-top: var(--hauteur-header);
+}
+
+/* ---------- Bouton vert (texte noir pour le contraste) ---------- */
+.bouton {
+  display: inline-block;
+  min-height: 44px;
+  padding: 12px 24px;
+  border: 0;
+  background-color: var(--accent);
+  color: var(--texte);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ---------- Accessibilité ---------- */
+.lien-evitement {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 12px 16px;
+  background-color: var(--texte);
+  color: var(--texte-sur-fonce);
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.lien-evitement:focus {
+  transform: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Écrans plus larges ---------- */
+@media (min-width: 600px) {
+  :root {
+    --marge-laterale: 40px;
+    --espace-section: 72px;
+  }
+}
+
+@media (min-width: 900px) {
+  :root {
+    --hauteur-header: 80px;
+    --marge-laterale: 80px;
+    --espace-section: 96px;
+  }
+
+  .sur-titre {
+    font-size: 0.875rem;
+  }
+}
+
+/* ---------- Mouvements réduits ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}
