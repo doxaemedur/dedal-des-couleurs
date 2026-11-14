@@ -33,7 +33,7 @@
   --texte-sur-fonce: #FFFFFF;
   --bordure: #D9CFCF;
   --overlay-hero: rgba(238, 230, 230, 0.55);
-  --overlay-menu: rgba(0, 0, 0, 0.55);
+  --overlay-menu: rgba(0, 0, 0, 0.7);
 
   --police-titre: "Freckle Face", "Glacial Indifference", cursive;
   --police-texte: "Glacial Indifference", "Century Gothic", Arial, sans-serif;
