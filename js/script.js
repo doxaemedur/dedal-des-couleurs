@@ -210,8 +210,10 @@
   const blocs = document.querySelectorAll(
     ".oeuvres .en-tete-section, .histoire__texte, .infos, .formulaire-carte"
   );
-  /* Photos : effet rideau */
-  const photos = document.querySelectorAll(".grille-oeuvres > li, .histoire__cadre");
+  /* Photos : effet rideau. On observe le bloc qui contient la photo, pas la
+     photo masquée elle-même : un élément entièrement masqué par clip-path
+     n'est jamais signalé comme visible par IntersectionObserver. */
+  const photos = document.querySelectorAll(".grille-oeuvres > li, .histoire__grille");
 
   /* Cartes d'œuvres : léger décalage d'une colonne à l'autre */
   document.querySelectorAll(".grille-oeuvres > li").forEach(function (carte, index) {
