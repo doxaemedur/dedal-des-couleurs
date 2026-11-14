@@ -63,7 +63,6 @@ body {
   font-family: var(--police-texte);
   font-size: 1rem;
   line-height: 1.5;
-  overflow-x: hidden;
 }
 
 h1,
@@ -196,6 +195,126 @@ p {
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   Header fixe et menu mobile
+   ========================================================================== */
+.entete {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--fond-page);
+  border-bottom: 1px solid var(--bordure);
+}
+
+.entete__interieur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--hauteur-header);
+}
+
+.entete__logo {
+  display: block;
+  flex-shrink: 0;
+}
+
+.entete__logo img,
+.menu__logo {
+  width: 52px;
+  height: auto;
+}
+
+.bouton-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 1.5rem;
+}
+
+.bouton-menu {
+  margin-right: -10px;
+}
+
+/* Panneau latéral : fermé par défaut, il arrive par la droite */
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(300px, 85vw);
+  height: 100vh;
+  height: 100dvh;
+  padding: 12px 20px 32px 28px;
+  overflow-y: auto;
+  background-color: var(--fond-page);
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: transform 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.menu.est-ouvert {
+  visibility: visible;
+  transform: translateX(0);
+  transition: transform 0.35s ease, visibility 0s linear 0s;
+}
+
+.menu__haut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+}
+
+.menu__liste {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.menu__lien {
+  display: inline-block;
+  padding-block: 8px;
+  font-size: 1.375rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.menu__lien--inscription {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background-color: var(--accent);
+}
+
+.voile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background-color: var(--overlay-menu);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.voile-menu.est-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease, visibility 0s linear 0s;
+}
+
+/* Empêche la page de défiler derrière le menu ouvert */
+.menu-ouvert {
+  overflow: hidden;
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
@@ -213,6 +332,59 @@ p {
 
   .sur-titre {
     font-size: 0.875rem;
+  }
+
+  /* Header desktop : liens en ligne, plus de hamburger */
+  .entete__logo img {
+    width: 64px;
+  }
+
+  .bouton-menu,
+  .menu__haut,
+  .voile-menu {
+    display: none;
+  }
+
+  .menu,
+  .menu.est-ouvert {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  .menu__liste {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .menu__lien {
+    padding-block: 4px;
+    font-size: 0.9375rem;
+    font-weight: 400;
+  }
+
+  .menu__lien:hover {
+    text-decoration: underline;
+  }
+
+  .menu__lien--inscription {
+    margin-top: 0;
+    padding: 8px 16px;
+    border: 1.5px solid var(--accent);
+    background: none;
+    font-weight: 700;
+  }
+
+  .menu__lien--inscription:hover {
+    background-color: var(--accent);
+    text-decoration: none;
   }
 }
 

@@ -14,11 +14,40 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap">
-  <link rel="preload" href="fonts/GlacialIndifference-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://kit.fontawesome.com/104174e666.js" crossorigin="anonymous" defer></script>
+  <script src="js/script.js" defer></script>
 </head>
 <body>
   <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+  <header class="entete">
+    <div class="conteneur entete__interieur">
+      <a class="entete__logo" href="#accueil">
+        <img src="images/logo-dedal.png" alt="Dédal des Couleurs, retour à l'accueil" width="128" height="96">
+      </a>
+
+      <button class="bouton-icone bouton-menu" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-principal">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <nav class="menu" id="menu-principal" aria-label="Navigation principale">
+        <div class="menu__haut">
+          <img class="menu__logo" src="images/logo-dedal.png" alt="" width="128" height="96">
+          <button class="bouton-icone bouton-fermer" type="button" aria-label="Fermer le menu">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <ul class="menu__liste">
+          <li><a class="menu__lien" href="#accueil">Accueil</a></li>
+          <li><a class="menu__lien" href="#oeuvres">Œuvres</a></li>
+          <li><a class="menu__lien" href="#histoire">Histoire</a></li>
+          <li><a class="menu__lien menu__lien--inscription" href="#inscription">Inscription</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="voile-menu"></div>
+  </header>
 
   <main id="contenu">
     <h1>Galerie Dédal des Couleurs</h1>
