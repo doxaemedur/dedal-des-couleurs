@@ -584,6 +584,134 @@ p {
 }
 
 /* ==========================================================================
+   Visionneuse plein écran des œuvres (créée par le script)
+   ========================================================================== */
+.carte__cadre {
+  position: relative;
+}
+
+/* Bouton transparent posé sur la photo pour l'ouvrir en grand */
+.carte__agrandir {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.carte__agrandir:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.visionneuse {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 72px 16px 24px;
+  border: 0;
+  background: none;
+  color: var(--texte-sur-fonce);
+}
+
+.visionneuse[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visionneuse::backdrop {
+  background-color: rgba(0, 0, 0, 0.92);
+}
+
+.visionneuse__figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
+}
+
+.visionneuse__image {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 190px);
+  max-height: calc(100dvh - 190px);
+  object-fit: contain;
+}
+
+.visionneuse__legende {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.visionneuse__auteur {
+  font-weight: 700;
+}
+
+.visionneuse__compteur {
+  opacity: 0.75;
+}
+
+.visionneuse button {
+  color: var(--texte-sur-fonce);
+}
+
+.visionneuse__fermer {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.visionneuse__nav {
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.55);
+  transform: translateY(-50%);
+  transition: background-color 0.25s ease;
+}
+
+.visionneuse__nav:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.visionneuse__nav--precedent {
+  left: 8px;
+}
+
+.visionneuse__nav--suivant {
+  right: 8px;
+}
+
+.visionneuse :focus-visible {
+  outline-color: var(--texte-sur-fonce);
+}
+
+/* Navigateurs sans « View Transitions » : simple fondu à l'ouverture */
+.visionneuse.sans-transition[open] {
+  animation: fondu-visionneuse 0.3s ease-out;
+}
+
+@keyframes fondu-visionneuse {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
    Section Histoire
    ========================================================================== */
 .histoire__grille {
@@ -985,6 +1113,23 @@ p {
 
   .carte__auteur {
     font-size: 1.125rem;
+  }
+
+  .visionneuse {
+    padding: 72px 96px 32px;
+  }
+
+  .visionneuse__nav--precedent {
+    left: 24px;
+  }
+
+  .visionneuse__nav--suivant {
+    right: 24px;
+  }
+
+  .visionneuse__fermer {
+    top: 20px;
+    right: 24px;
   }
 
   /* Histoire desktop : image à gauche, texte à droite */

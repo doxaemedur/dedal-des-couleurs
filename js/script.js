@@ -179,6 +179,240 @@
 })();
 
 /* ==========================================================================
+   Visionneuse plein écran des œuvres
+   Un clic sur une photo l'ouvre en grand ; elle « grandit » depuis sa carte
+   grâce à l'API View Transitions quand le navigateur la propose.
+   Navigation : flèches du clavier, boutons ou glissement du doigt.
+   ========================================================================== */
+(function () {
+  const figures = Array.from(document.querySelectorAll(".grille-oeuvres .carte"));
+
+  if (!figures.length || typeof HTMLDialogElement !== "function") {
+    return;
+  }
+
+  const moinsDeMouvement = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const transitionsPossibles = typeof document.startViewTransition === "function" && !moinsDeMouvement;
+
+  /* Données de chaque œuvre, lues directement dans les cartes */
+  const oeuvres = figures.map(function (figure) {
+    const image = figure.querySelector("img");
+    return {
+      vignette: image,
+      grand: image.getAttribute("src").replace(".webp", "-grand.webp"),
+      alt: image.getAttribute("alt"),
+      auteur: figure.querySelector(".carte__auteur").textContent,
+      date: figure.querySelector(".carte__date").textContent,
+      declencheur: null
+    };
+  });
+
+  /* Bouton d'agrandissement posé sur chaque photo */
+  oeuvres.forEach(function (oeuvre, index) {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.className = "carte__agrandir";
+    bouton.setAttribute("aria-label", "Agrandir l'œuvre de " + oeuvre.auteur);
+    bouton.addEventListener("click", function () {
+      ouvrir(index);
+    });
+    oeuvre.vignette.parentElement.appendChild(bouton);
+    oeuvre.declencheur = bouton;
+  });
+
+  /* Styles de l'animation de transition : injectés ici car les pseudo-éléments
+     ::view-transition ne sont pas encore reconnus par le validateur CSS du W3C */
+  if (transitionsPossibles) {
+    const style = document.createElement("style");
+    style.textContent =
+      "::view-transition-group(oeuvre){animation-duration:.6s;animation-timing-function:cubic-bezier(.2,.8,.2,1)}" +
+      "::view-transition-old(oeuvre),::view-transition-new(oeuvre){width:100%;height:100%;object-fit:cover}" +
+      "::view-transition-old(root),::view-transition-new(root){animation-duration:.4s}";
+    document.head.appendChild(style);
+  }
+
+  let visionneuse = null;
+  let image;
+  let auteur;
+  let date;
+  let compteur;
+  let courant = 0;
+  let enCours = false;
+
+  function creerBouton(classe, libelle, icone) {
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.className = "bouton-icone " + classe;
+    bouton.setAttribute("aria-label", libelle);
+    const i = document.createElement("i");
+    i.className = "fa-solid " + icone;
+    i.setAttribute("aria-hidden", "true");
+    bouton.appendChild(i);
+    return bouton;
+  }
+
+  /* La visionneuse n'est construite qu'à la première ouverture */
+  function construire() {
+    visionneuse = document.createElement("dialog");
+    visionneuse.className = "visionneuse";
+    visionneuse.setAttribute("aria-label", "Visionneuse des œuvres");
+    if (!transitionsPossibles) {
+      visionneuse.classList.add("sans-transition");
+    }
+
+    const fermerBouton = creerBouton("visionneuse__fermer", "Fermer la visionneuse", "fa-xmark");
+    const precedent = creerBouton("visionneuse__nav visionneuse__nav--precedent", "Œuvre précédente", "fa-chevron-left");
+    const suivant = creerBouton("visionneuse__nav visionneuse__nav--suivant", "Œuvre suivante", "fa-chevron-right");
+
+    const figure = document.createElement("figure");
+    figure.className = "visionneuse__figure";
+    image = document.createElement("img");
+    image.className = "visionneuse__image";
+    const legende = document.createElement("figcaption");
+    legende.className = "visionneuse__legende";
+    auteur = document.createElement("span");
+    auteur.className = "visionneuse__auteur";
+    date = document.createElement("span");
+    compteur = document.createElement("span");
+    compteur.className = "visionneuse__compteur";
+    legende.append(auteur, date, compteur);
+    figure.append(image, legende);
+    visionneuse.append(fermerBouton, precedent, figure, suivant);
+    document.body.appendChild(visionneuse);
+
+    fermerBouton.addEventListener("click", fermer);
+    precedent.addEventListener("click", function () {
+      naviguer(-1);
+    });
+    suivant.addEventListener("click", function () {
+      naviguer(1);
+    });
+
+    /* Échap : on remplace la fermeture native par la fermeture animée */
+    visionneuse.addEventListener("cancel", function (evenement) {
+      evenement.preventDefault();
+      fermer();
+    });
+
+    /* Clic sur le fond sombre (en dehors de la photo et des boutons) */
+    visionneuse.addEventListener("click", function (evenement) {
+      if (evenement.target === visionneuse) {
+        fermer();
+      }
+    });
+
+    visionneuse.addEventListener("keydown", function (evenement) {
+      if (evenement.key === "ArrowLeft") {
+        naviguer(-1);
+      } else if (evenement.key === "ArrowRight") {
+        naviguer(1);
+      }
+    });
+
+    /* Glissement du doigt sur mobile */
+    let departX = null;
+    visionneuse.addEventListener("touchstart", function (evenement) {
+      departX = evenement.touches[0].clientX;
+    }, { passive: true });
+    visionneuse.addEventListener("touchend", function (evenement) {
+      if (departX === null) {
+        return;
+      }
+      const ecart = evenement.changedTouches[0].clientX - departX;
+      departX = null;
+      if (Math.abs(ecart) > 50) {
+        naviguer(ecart < 0 ? 1 : -1);
+      }
+    });
+  }
+
+  /* Charge la grande image et attend qu'elle soit prête à s'afficher */
+  function charger(index) {
+    const oeuvre = oeuvres[index];
+    image.src = oeuvre.grand;
+    image.alt = oeuvre.alt;
+    auteur.textContent = oeuvre.auteur;
+    date.textContent = oeuvre.date;
+    compteur.textContent = (index + 1) + " / " + oeuvres.length;
+    const delai = new Promise(function (resoudre) {
+      window.setTimeout(resoudre, 1500);
+    });
+    return Promise.race([image.decode().catch(function () {}), delai]);
+  }
+
+  function transition(changement) {
+    if (!transitionsPossibles) {
+      changement();
+      return Promise.resolve();
+    }
+    return document.startViewTransition(changement).finished;
+  }
+
+  function ouvrir(index) {
+    if (enCours) {
+      return;
+    }
+    enCours = true;
+    if (!visionneuse) {
+      construire();
+    }
+    courant = index;
+    const vignette = oeuvres[index].vignette;
+    charger(index).then(function () {
+      vignette.style.viewTransitionName = "oeuvre";
+      return transition(function () {
+        vignette.style.viewTransitionName = "";
+        image.style.viewTransitionName = "oeuvre";
+        visionneuse.showModal();
+      });
+    }).finally(function () {
+      image.style.viewTransitionName = "";
+      enCours = false;
+    });
+  }
+
+  function fermer() {
+    if (enCours || !visionneuse.open) {
+      return;
+    }
+    enCours = true;
+    const oeuvre = oeuvres[courant];
+    /* La carte d'arrivée doit être à l'écran pour que la photo y retourne */
+    oeuvre.vignette.scrollIntoView({ block: "nearest", behavior: "instant" });
+    image.style.viewTransitionName = "oeuvre";
+    transition(function () {
+      image.style.viewTransitionName = "";
+      oeuvre.vignette.style.viewTransitionName = "oeuvre";
+      visionneuse.close();
+    }).finally(function () {
+      oeuvre.vignette.style.viewTransitionName = "";
+      oeuvre.declencheur.focus({ preventScroll: true });
+      enCours = false;
+    });
+  }
+
+  function naviguer(sens) {
+    if (enCours) {
+      return;
+    }
+    enCours = true;
+    courant = (courant + sens + oeuvres.length) % oeuvres.length;
+    const cible = courant;
+    /* Préchargement, puis fondu enchaîné vers l'œuvre suivante */
+    const prechargement = new Image();
+    prechargement.src = oeuvres[cible].grand;
+    const pret = prechargement.decode ? prechargement.decode().catch(function () {}) : Promise.resolve();
+    pret.then(function () {
+      return transition(function () {
+        return charger(cible);
+      });
+    }).finally(function () {
+      enCours = false;
+    });
+  }
+})();
+
+/* ==========================================================================
    Formulaire d'inscription à la newsletter
    Contrôle du remplissage et du format de l'e-mail, puis message de
    confirmation. Rien n'est envoyé ni stocké.
