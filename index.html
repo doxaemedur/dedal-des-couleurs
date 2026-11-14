@@ -13,9 +13,12 @@
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap">
-  <link rel="preload" href="images/hero-lanternes-800.webp" as="image" type="image/webp" media="(max-width: 899px)">
-  <link rel="preload" href="images/hero-lanternes.webp" as="image" type="image/webp" media="(min-width: 900px)">
+  <!-- Police des titres chargée sans bloquer le premier affichage -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap"></noscript>
+  <link rel="preload" href="images/hero-lanternes-800.webp" as="image" type="image/webp" media="(max-width: 899px)" fetchpriority="high">
+  <link rel="preload" href="images/hero-lanternes.webp" as="image" type="image/webp" media="(min-width: 900px)" fetchpriority="high">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/script.js" defer></script>
   <script src="https://kit.fontawesome.com/104174e666.js" crossorigin="anonymous" defer></script>
