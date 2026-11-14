@@ -678,6 +678,15 @@ p {
     width: auto;
     align-self: flex-start;
   }
+
+  /* Histoire tablette : l'image garde une taille raisonnable */
+  .histoire__grille {
+    gap: 32px;
+  }
+
+  .histoire__photo {
+    max-width: 480px;
+  }
 }
 
 @media (min-width: 900px) {
@@ -790,6 +799,7 @@ p {
   }
 
   .histoire__photo {
+    max-width: none;
     aspect-ratio: 560 / 640;
   }
 
