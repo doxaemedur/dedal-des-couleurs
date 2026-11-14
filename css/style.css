@@ -466,6 +466,152 @@ p {
   font-size: 0.875rem;
 }
 
+/* ==========================================================================
+   Section Infos pratiques et inscription
+   ========================================================================== */
+.inscription__grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.infos {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.infos h2 {
+  margin-bottom: 0;
+}
+
+.infos__bloc p,
+.infos__bloc address {
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.infos__bloc a {
+  text-decoration: none;
+}
+
+.infos__bloc a:hover {
+  text-decoration: underline;
+}
+
+.infos__bloc .infos__intitule {
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.plan__carte {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border: 0;
+}
+
+.plan__mention {
+  margin-top: 24px;
+  color: var(--texte-discret);
+  font-size: 0.75rem;
+}
+
+.plan__mention a {
+  text-decoration: none;
+}
+
+.plan__mention a:hover {
+  text-decoration: underline;
+}
+
+/* Carte du formulaire */
+.formulaire-carte {
+  padding: 28px 20px;
+  border: 1px solid var(--bordure);
+  background-color: var(--fond-carte);
+}
+
+.formulaire-carte__intro {
+  margin-top: 16px;
+  font-size: 1rem;
+}
+
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.champ label {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.champ input {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+  border: 1px solid var(--bordure);
+  border-radius: 0;
+  background-color: var(--fond-page);
+  font-size: 1rem;
+}
+
+.champ input::placeholder {
+  color: var(--texte-discret);
+  opacity: 1;
+}
+
+/* Focus et erreur : bordure noire de 2 px bien visible */
+.champ input:focus,
+.champ input[aria-invalid="true"] {
+  border-color: var(--texte);
+  box-shadow: inset 0 0 0 1px var(--texte);
+}
+
+.champ input:focus-visible {
+  outline: 0;
+}
+
+.champ__erreur {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.champ__erreur:empty {
+  display: none;
+}
+
+.formulaire__bouton {
+  width: 100%;
+  padding: 13px 28px;
+  font-size: 1rem;
+}
+
+.formulaire__confirmation {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.formulaire__confirmation:empty {
+  display: none;
+}
+
+.formulaire-carte__mention {
+  margin-top: 16px;
+  color: var(--texte-discret);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
@@ -476,6 +622,11 @@ p {
   .grille-oeuvres {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px 32px;
+  }
+
+  .formulaire__bouton {
+    width: auto;
+    align-self: flex-start;
   }
 }
 
@@ -602,6 +753,60 @@ p {
 
   .etiquettes li {
     padding: 8px 16px;
+  }
+
+  /* Infos et formulaire desktop : 2 colonnes */
+  .inscription__grille {
+    grid-template-columns: minmax(0, 560fr) minmax(0, 640fr);
+    align-items: start;
+    gap: 80px;
+  }
+
+  .infos {
+    gap: 28px;
+  }
+
+  .infos__bloc p,
+  .infos__bloc address {
+    font-size: 1.0625rem;
+  }
+
+  .plan__carte {
+    height: 220px;
+  }
+
+  .plan__mention {
+    margin-top: 28px;
+  }
+
+  .formulaire-carte {
+    padding: 48px;
+  }
+
+  .formulaire-carte__intro {
+    margin-top: 20px;
+  }
+
+  .formulaire {
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .champ {
+    gap: 8px;
+  }
+
+  .champ input {
+    height: 52px;
+    padding: 0 17px;
+  }
+
+  .formulaire__bouton {
+    font-size: 0.9375rem;
+  }
+
+  .formulaire-carte__mention {
+    margin-top: 20px;
   }
 }
 

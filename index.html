@@ -156,6 +156,67 @@
         </div>
       </div>
     </section>
+
+    <section class="section inscription" id="inscription" aria-labelledby="titre-infos">
+      <div class="conteneur inscription__grille">
+        <div class="infos">
+          <h2 id="titre-infos">Informations pratiques</h2>
+
+          <div class="infos__bloc">
+            <p class="infos__intitule">Adresse</p>
+            <address>10 rue de la République, 75000 Paris</address>
+          </div>
+
+          <div class="infos__bloc">
+            <p class="infos__intitule">Horaires d’ouverture</p>
+            <p>Du lundi au samedi&nbsp;:</p>
+            <p>9h30-18h30</p>
+            <p>Fermé le dimanche</p>
+          </div>
+
+          <div class="infos__bloc">
+            <p class="infos__intitule">Nous contacter</p>
+            <p><a href="tel:+33163458556">01.63.45.85.56</a></p>
+            <p><a href="mailto:dedal@gmail.com">dedal@gmail.com</a></p>
+          </div>
+
+          <div class="plan">
+            <iframe class="plan__carte" src="https://www.openstreetmap.org/export/embed.html?bbox=2.3545%2C48.8628%2C2.3727%2C48.8720&amp;layer=mapnik&amp;marker=48.8674%2C2.3636" title="Plan d'accès à la galerie Dédal des Couleurs" loading="lazy" width="560" height="220"></iframe>
+            <p class="plan__mention"><a href="https://www.openstreetmap.org/copyright">© Contributeurs OpenStreetMap</a></p>
+          </div>
+        </div>
+
+        <div class="formulaire-carte">
+          <h3>Newsletter</h3>
+          <p class="formulaire-carte__intro">Inscrivez-vous à notre newsletter pour être au courant de notre actualité</p>
+
+          <form class="formulaire" novalidate>
+            <div class="champ">
+              <label for="nom">Nom</label>
+              <input type="text" id="nom" name="nom" autocomplete="family-name" required placeholder="Votre nom">
+              <p class="champ__erreur" id="erreur-nom"></p>
+            </div>
+
+            <div class="champ">
+              <label for="prenom">Prénom</label>
+              <input type="text" id="prenom" name="prenom" autocomplete="given-name" required placeholder="Votre prénom">
+              <p class="champ__erreur" id="erreur-prenom"></p>
+            </div>
+
+            <div class="champ">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" autocomplete="email" required placeholder="nom@exemple.fr">
+              <p class="champ__erreur" id="erreur-email"></p>
+            </div>
+
+            <button class="bouton formulaire__bouton" type="submit">S'inscrire</button>
+            <p class="formulaire__confirmation" role="status"></p>
+          </form>
+
+          <p class="formulaire-carte__mention">Votre adresse email est uniquement utilisée pour vous envoyer notre newsletter. Vous pouvez vous désabonner à tout moment via le lien intégré dans l'e-mail.</p>
+        </div>
+      </div>
+    </section>
   </main>
 </body>
 </html>
