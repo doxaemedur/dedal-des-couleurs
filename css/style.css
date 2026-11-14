@@ -424,6 +424,48 @@ p {
   font-size: 0.875rem;
 }
 
+/* ==========================================================================
+   Section Histoire
+   ========================================================================== */
+.histoire__grille {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.histoire__photo {
+  width: 100%;
+  aspect-ratio: 350 / 400;
+  object-fit: cover;
+}
+
+.histoire__texte {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.histoire__texte h2 {
+  margin-bottom: -4px;
+}
+
+.histoire__intertitre {
+  font-weight: 700;
+}
+
+.etiquettes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.etiquettes li {
+  padding: 6px 14px;
+  border: 1px solid var(--bordure);
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
@@ -537,6 +579,29 @@ p {
 
   .carte__auteur {
     font-size: 1.125rem;
+  }
+
+  /* Histoire desktop : image à gauche, texte à droite */
+  .histoire__grille {
+    grid-template-columns: minmax(0, 560fr) minmax(0, 640fr);
+    align-items: center;
+    gap: 80px;
+  }
+
+  .histoire__photo {
+    aspect-ratio: 560 / 640;
+  }
+
+  .histoire__texte {
+    gap: 24px;
+  }
+
+  .etiquettes {
+    gap: 12px;
+  }
+
+  .etiquettes li {
+    padding: 8px 16px;
   }
 }
 
