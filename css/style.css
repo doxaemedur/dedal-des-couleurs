@@ -413,17 +413,83 @@ p {
    Section Accueil
    ========================================================================== */
 .accueil {
+  position: relative;
   display: flex;
   align-items: center;
   min-height: calc(100vh - var(--hauteur-header));
   min-height: calc(100svh - var(--hauteur-header));
   padding-block: var(--espace-section);
+  overflow: hidden;
+  isolation: isolate;
   background-color: var(--fond-page);
+  scroll-margin-top: var(--hauteur-header);
+}
+
+/* Fond photo sur un calque à part : il peut zoomer lentement (effet Ken Burns)
+   et glisser moins vite que la page au défilement (parallaxe) */
+.accueil__fond {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.accueil__fond::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background-image: linear-gradient(var(--overlay-hero), var(--overlay-hero)), url("../images/hero-lanternes-800.webp");
   background-position: center;
   background-size: cover;
-  scroll-margin-top: var(--hauteur-header);
+  animation: ken-burns 18s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.15);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Titre révélé mot par mot : chaque mot monte depuis un masque */
+.mot {
+  display: inline-block;
+  margin-block: -0.15em;
+  padding-block: 0.15em;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.mot__interieur {
+  display: inline-block;
+  animation: montee-mot 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.2s;
+}
+
+.mot:nth-child(2) .mot__interieur {
+  animation-delay: 0.3s;
+}
+
+.mot:nth-child(3) .mot__interieur {
+  animation-delay: 0.4s;
+}
+
+.mot:nth-child(4) .mot__interieur {
+  animation-delay: 0.5s;
+}
+
+@keyframes montee-mot {
+  from {
+    transform: translateY(115%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
 
 .accueil__contenu {
   display: flex;
@@ -455,18 +521,17 @@ p {
   }
 }
 
-.accueil__titre,
 .accueil__texte,
 .accueil__bouton {
-  animation: apparition 0.7s ease-out both;
+  animation: apparition 0.8s ease-out both;
 }
 
 .accueil__texte {
-  animation-delay: 0.15s;
+  animation-delay: 0.75s;
 }
 
 .accueil__bouton {
-  animation-delay: 0.3s;
+  animation-delay: 0.95s;
 }
 
 .bouton:hover {
@@ -885,7 +950,7 @@ p {
   }
 
   /* Accueil desktop : photo en pleine définition */
-  .accueil {
+  .accueil__fond::before {
     background-image: linear-gradient(var(--overlay-hero), var(--overlay-hero)), url("../images/hero-lanternes.webp");
   }
 

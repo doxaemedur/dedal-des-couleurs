@@ -92,6 +92,36 @@
 })();
 
 /* ==========================================================================
+   Accueil : parallaxe de la photo
+   ========================================================================== */
+(function () {
+  const accueil = document.querySelector(".accueil");
+  const fond = document.querySelector(".accueil__fond");
+
+  if (!fond || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  /* Parallaxe : la photo descend à 30 % de la vitesse du défilement */
+  let enAttente = false;
+
+  function deplacerFond() {
+    enAttente = false;
+    const defilement = window.scrollY;
+    if (defilement <= accueil.offsetTop + accueil.offsetHeight) {
+      fond.style.transform = "translate3d(0, " + (defilement * 0.3).toFixed(1) + "px, 0)";
+    }
+  }
+
+  window.addEventListener("scroll", function () {
+    if (!enAttente) {
+      enAttente = true;
+      window.requestAnimationFrame(deplacerFond);
+    }
+  }, { passive: true });
+})();
+
+/* ==========================================================================
    Apparition des blocs au défilement
    Désactivée si l'utilisateur demande moins d'animations.
    ========================================================================== */
