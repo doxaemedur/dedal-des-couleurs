@@ -1,6 +1,9 @@
 # Fichiers sources fournis (photos originales, logo, polices) : jamais commités
 _sources/
 
+# Cahier des charges (document de travail, non publié)
+CDC.md
+
 # Fichiers système
 .DS_Store
 Thumbs.db
