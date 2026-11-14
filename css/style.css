@@ -463,12 +463,14 @@ p {
   background-image: linear-gradient(var(--overlay-hero), var(--overlay-hero)), url("../images/hero-lanternes-800.webp");
   background-position: center;
   background-size: cover;
-  animation: ken-burns 18s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: ken-burns 2.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Zoom court : un mouvement trop long empêcherait la page d'être
+   considérée comme « affichée » (indice de vitesse Lighthouse) */
 @keyframes ken-burns {
   from {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
 
   to {
