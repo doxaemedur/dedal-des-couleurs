@@ -315,6 +315,71 @@ p {
   overflow: hidden;
 }
 
+/* ==========================================================================
+   Section Accueil
+   ========================================================================== */
+.accueil {
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - var(--hauteur-header));
+  min-height: calc(100svh - var(--hauteur-header));
+  padding-block: var(--espace-section);
+  background-color: var(--fond-page);
+  background-image: linear-gradient(var(--overlay-hero), var(--overlay-hero)), url("../images/hero-lanternes-800.webp");
+  background-position: center;
+  background-size: cover;
+  scroll-margin-top: var(--hauteur-header);
+}
+
+.accueil__contenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.accueil__texte {
+  max-width: 330px;
+}
+
+.accueil__bouton {
+  padding: 14px 24px;
+  font-size: 1.0625rem;
+}
+
+/* Apparition en fondu et légère montée, avec un décalage entre les éléments */
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.accueil__titre,
+.accueil__texte,
+.accueil__bouton {
+  animation: apparition 0.7s ease-out both;
+}
+
+.accueil__texte {
+  animation-delay: 0.15s;
+}
+
+.accueil__bouton {
+  animation-delay: 0.3s;
+}
+
+.bouton:hover {
+  background-color: var(--texte);
+  color: var(--accent);
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
@@ -385,6 +450,20 @@ p {
   .menu__lien--inscription:hover {
     background-color: var(--accent);
     text-decoration: none;
+  }
+
+  /* Accueil desktop : photo en pleine définition */
+  .accueil {
+    background-image: linear-gradient(var(--overlay-hero), var(--overlay-hero)), url("../images/hero-lanternes.webp");
+  }
+
+  .accueil__texte {
+    max-width: 720px;
+  }
+
+  .accueil__bouton {
+    padding: 12px 24px;
+    font-size: 0.9375rem;
   }
 }
 

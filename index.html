@@ -14,6 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Freckle+Face&amp;display=swap">
+  <link rel="preload" href="images/hero-lanternes-800.webp" as="image" type="image/webp" media="(max-width: 899px)">
+  <link rel="preload" href="images/hero-lanternes.webp" as="image" type="image/webp" media="(min-width: 900px)">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://kit.fontawesome.com/104174e666.js" crossorigin="anonymous" defer></script>
   <script src="js/script.js" defer></script>
@@ -50,7 +52,13 @@
   </header>
 
   <main id="contenu">
-    <h1>Galerie Dédal des Couleurs</h1>
+    <section class="accueil" id="accueil" aria-labelledby="titre-accueil">
+      <div class="conteneur accueil__contenu">
+        <h1 class="accueil__titre" id="titre-accueil">Galerie Dédal des Couleurs</h1>
+        <p class="accueil__texte">Venez découvrir les photographies de nos artistes photographes exposés dans notre galerie de 50m²</p>
+        <a class="bouton accueil__bouton" href="#oeuvres">Nous découvrir</a>
+      </div>
+    </section>
   </main>
 </body>
 </html>
