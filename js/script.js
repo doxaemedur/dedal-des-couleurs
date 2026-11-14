@@ -92,6 +92,44 @@
 })();
 
 /* ==========================================================================
+   Apparition des blocs au défilement
+   Désactivée si l'utilisateur demande moins d'animations.
+   ========================================================================== */
+(function () {
+  const moinsDeMouvement = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (moinsDeMouvement || !("IntersectionObserver" in window)) {
+    return;
+  }
+
+  const blocs = document.querySelectorAll(
+    ".oeuvres .en-tete-section, .grille-oeuvres > li, .histoire__photo, .histoire__texte, .infos, .formulaire-carte"
+  );
+
+  /* Cartes d'œuvres : léger décalage d'une colonne à l'autre */
+  document.querySelectorAll(".grille-oeuvres > li").forEach(function (carte, index) {
+    carte.style.setProperty("--delai", (index % 3) * 0.12 + "s");
+  });
+  document.querySelector(".histoire__texte").style.setProperty("--delai", "0.15s");
+  document.querySelector(".formulaire-carte").style.setProperty("--delai", "0.15s");
+
+  const observateur = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (entree) {
+      if (entree.isIntersecting) {
+        entree.target.classList.add("est-visible");
+        observateur.unobserve(entree.target);
+      }
+    });
+  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
+
+  blocs.forEach(function (bloc) {
+    bloc.classList.add("revele");
+    observateur.observe(bloc);
+  });
+  document.documentElement.classList.add("js-anim");
+})();
+
+/* ==========================================================================
    Formulaire d'inscription à la newsletter
    Contrôle du remplissage et du format de l'e-mail, puis message de
    confirmation. Rien n'est envoyé ni stocké.
