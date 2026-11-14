@@ -380,11 +380,60 @@ p {
   color: var(--accent);
 }
 
+/* ==========================================================================
+   Section Œuvres
+   ========================================================================== */
+.en-tete-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grille-oeuvres {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.carte__cadre {
+  overflow: hidden;
+}
+
+.carte__cadre img {
+  width: 100%;
+  aspect-ratio: 350 / 260;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.carte__legende {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.carte__auteur {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.carte__date {
+  color: var(--texte-discret);
+  font-size: 0.875rem;
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
     --marge-laterale: 40px;
     --espace-section: 72px;
+  }
+
+  .grille-oeuvres {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 32px;
   }
 }
 
@@ -464,6 +513,37 @@ p {
   .accueil__bouton {
     padding: 12px 24px;
     font-size: 0.9375rem;
+  }
+
+  /* Œuvres desktop : 3 colonnes */
+  .en-tete-section {
+    gap: 12px;
+  }
+
+  .grille-oeuvres {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px 40px;
+    margin-top: 48px;
+  }
+
+  .carte__cadre img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .carte__legende {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .carte__auteur {
+    font-size: 1.125rem;
+  }
+}
+
+/* Zoom léger de l'image au survol (appareils avec souris) */
+@media (hover: hover) {
+  .carte:hover .carte__cadre img {
+    transform: scale(1.04);
   }
 }
 
