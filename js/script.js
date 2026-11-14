@@ -90,3 +90,96 @@
     }
   });
 })();
+
+/* ==========================================================================
+   Formulaire d'inscription à la newsletter
+   Contrôle du remplissage et du format de l'e-mail, puis message de
+   confirmation. Rien n'est envoyé ni stocké.
+   ========================================================================== */
+(function () {
+  const formulaire = document.querySelector(".formulaire");
+
+  if (!formulaire) {
+    return;
+  }
+
+  const confirmation = formulaire.querySelector(".formulaire__confirmation");
+  const formatEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  const champs = [
+    {
+      input: document.getElementById("nom"),
+      erreur: document.getElementById("erreur-nom"),
+      verifier: function (valeur) {
+        return valeur === "" ? "Veuillez indiquer votre nom." : "";
+      }
+    },
+    {
+      input: document.getElementById("prenom"),
+      erreur: document.getElementById("erreur-prenom"),
+      verifier: function (valeur) {
+        return valeur === "" ? "Veuillez indiquer votre prénom." : "";
+      }
+    },
+    {
+      input: document.getElementById("email"),
+      erreur: document.getElementById("erreur-email"),
+      verifier: function (valeur) {
+        if (valeur === "") {
+          return "Veuillez indiquer votre adresse e-mail.";
+        }
+        if (!formatEmail.test(valeur)) {
+          return "Adresse e-mail invalide : vérifiez le format (exemple : nom@exemple.fr).";
+        }
+        return "";
+      }
+    }
+  ];
+
+  function afficherErreur(champ, message) {
+    champ.erreur.textContent = message;
+    if (message) {
+      champ.input.setAttribute("aria-invalid", "true");
+      champ.input.setAttribute("aria-describedby", champ.erreur.id);
+    } else {
+      champ.input.removeAttribute("aria-invalid");
+      champ.input.removeAttribute("aria-describedby");
+    }
+  }
+
+  function controler(champ) {
+    const message = champ.verifier(champ.input.value.trim());
+    afficherErreur(champ, message);
+    return message === "";
+  }
+
+  formulaire.addEventListener("submit", function (evenement) {
+    /* Aucune donnée n'est envoyée */
+    evenement.preventDefault();
+    confirmation.textContent = "";
+
+    let premierInvalide = null;
+    champs.forEach(function (champ) {
+      if (!controler(champ) && !premierInvalide) {
+        premierInvalide = champ.input;
+      }
+    });
+
+    if (premierInvalide) {
+      premierInvalide.focus();
+      return;
+    }
+
+    formulaire.reset();
+    confirmation.textContent = "Merci, votre inscription à la newsletter est bien prise en compte.";
+  });
+
+  /* Une fois signalée, l'erreur disparaît dès que le champ est corrigé */
+  champs.forEach(function (champ) {
+    champ.input.addEventListener("input", function () {
+      if (champ.input.getAttribute("aria-invalid") === "true") {
+        controler(champ);
+      }
+    });
+  });
+})();
