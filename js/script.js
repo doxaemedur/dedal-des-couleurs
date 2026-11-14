@@ -92,6 +92,80 @@
 })();
 
 /* ==========================================================================
+   Navigation vivante : section active et header compact
+   ========================================================================== */
+(function () {
+  const entete = document.querySelector(".entete");
+  const nav = document.getElementById("menu-principal");
+  const liens = Array.from(document.querySelectorAll(".menu__lien"));
+
+  if (!entete || !nav || !("IntersectionObserver" in window)) {
+    return;
+  }
+
+  /* Header compact dès qu'on a quitté le haut de la page */
+  function majEntete() {
+    entete.classList.toggle("est-compacte", window.scrollY > 8);
+  }
+  window.addEventListener("scroll", majEntete, { passive: true });
+  majEntete();
+
+  /* Trait qui glisse sous le lien actif (desktop) */
+  const indicateur = document.createElement("span");
+  indicateur.className = "menu__indicateur";
+  indicateur.setAttribute("aria-hidden", "true");
+  nav.appendChild(indicateur);
+
+  let lienActif = null;
+
+  function placerIndicateur() {
+    if (!lienActif || lienActif.classList.contains("menu__lien--inscription")) {
+      indicateur.classList.remove("est-visible");
+      return;
+    }
+    const boiteNav = nav.getBoundingClientRect();
+    const boiteLien = lienActif.getBoundingClientRect();
+    indicateur.style.setProperty("--position-indicateur", (boiteLien.left - boiteNav.left) + "px");
+    indicateur.style.setProperty("--largeur-indicateur", boiteLien.width + "px");
+    indicateur.classList.add("est-visible");
+  }
+
+  function activer(id) {
+    const lien = liens.find(function (l) {
+      return l.getAttribute("href") === "#" + id;
+    });
+    if (!lien || lien === lienActif) {
+      return;
+    }
+    liens.forEach(function (l) {
+      l.removeAttribute("aria-current");
+    });
+    lien.setAttribute("aria-current", "location");
+    lienActif = lien;
+    placerIndicateur();
+  }
+
+  /* Une section est « active » quand elle croise une ligne placée vers le
+     milieu de l'écran */
+  const observateur = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (entree) {
+      if (entree.isIntersecting) {
+        activer(entree.target.id);
+      }
+    });
+  }, { rootMargin: "-45% 0px -54% 0px" });
+
+  document.querySelectorAll("main > section[id]").forEach(function (section) {
+    observateur.observe(section);
+  });
+
+  window.addEventListener("resize", placerIndicateur);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(placerIndicateur);
+  }
+})();
+
+/* ==========================================================================
    Accueil : parallaxe de la photo
    ========================================================================== */
 (function () {
@@ -474,6 +548,33 @@
     return message === "";
   }
 
+  /* Relance la secousse même si le champ était déjà en erreur */
+  function secouer(input) {
+    input.classList.remove("secoue");
+    void input.offsetWidth;
+    input.classList.add("secoue");
+  }
+
+  /* Message de confirmation précédé d'une coche animée (décorative) */
+  function confirmer(texte) {
+    const ns = "http://www.w3.org/2000/svg";
+    const icone = document.createElementNS(ns, "svg");
+    icone.setAttribute("class", "confirmation__icone");
+    icone.setAttribute("viewBox", "0 0 24 24");
+    icone.setAttribute("aria-hidden", "true");
+    const cercle = document.createElementNS(ns, "circle");
+    cercle.setAttribute("cx", "12");
+    cercle.setAttribute("cy", "12");
+    cercle.setAttribute("r", "12");
+    const coche = document.createElementNS(ns, "path");
+    coche.setAttribute("d", "M7 12.5l3.2 3.2L17 9");
+    icone.append(cercle, coche);
+    const message = document.createElement("span");
+    message.className = "confirmation__texte";
+    message.textContent = texte;
+    confirmation.append(icone, message);
+  }
+
   formulaire.addEventListener("submit", function (evenement) {
     /* Aucune donnée n'est envoyée */
     evenement.preventDefault();
@@ -481,8 +582,11 @@
 
     let premierInvalide = null;
     champs.forEach(function (champ) {
-      if (!controler(champ) && !premierInvalide) {
-        premierInvalide = champ.input;
+      if (!controler(champ)) {
+        secouer(champ.input);
+        if (!premierInvalide) {
+          premierInvalide = champ.input;
+        }
       }
     });
 
@@ -492,7 +596,7 @@
     }
 
     formulaire.reset();
-    confirmation.textContent = "Merci, votre inscription à la newsletter est bien prise en compte.";
+    confirmer("Merci, votre inscription à la newsletter est bien prise en compte.");
   });
 
   /* Une fois signalée, l'erreur disparaît dès que le champ est corrigé */

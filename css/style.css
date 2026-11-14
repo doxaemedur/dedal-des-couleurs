@@ -404,6 +404,29 @@ p {
   transition: opacity 0.35s ease, visibility 0s linear 0s;
 }
 
+/* Header qui s'affine dès qu'on quitte le haut de page */
+.entete {
+  transition: box-shadow 0.3s ease;
+}
+
+.entete__logo img {
+  transition: transform 0.3s ease;
+  transform-origin: left center;
+}
+
+.entete.est-compacte {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+}
+
+.entete.est-compacte .entete__logo img {
+  transform: scale(0.88);
+}
+
+/* Indicateur de section active (affiché en desktop seulement) */
+.menu__indicateur {
+  display: none;
+}
+
 /* Empêche la page de défiler derrière le menu ouvert */
 .menu-ouvert {
   overflow: hidden;
@@ -896,6 +919,84 @@ p {
   display: none;
 }
 
+/* Champ en erreur : brève secousse horizontale */
+@keyframes secousse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  40% {
+    transform: translateX(5px);
+  }
+
+  60% {
+    transform: translateX(-4px);
+  }
+
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+.champ input.secoue {
+  animation: secousse 0.4s ease-in-out;
+}
+
+/* Confirmation : pastille verte puis coche qui se dessine */
+.formulaire__confirmation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confirmation__icone {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.confirmation__icone circle {
+  fill: var(--accent);
+  transform-origin: 12px 12px;
+  animation: pastille 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.confirmation__icone path {
+  fill: none;
+  stroke: var(--texte);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  animation: trace-coche 0.45s ease-out 0.3s forwards;
+}
+
+.confirmation__texte {
+  animation: apparition 0.5s ease-out 0.2s both;
+}
+
+@keyframes pastille {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes trace-coche {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 .formulaire-carte__mention {
   margin-top: 16px;
   color: var(--texte-discret);
@@ -1062,6 +1163,34 @@ p {
 
   .menu__lien--inscription {
     transition: background-color 0.25s ease;
+  }
+
+  /* Trait vert qui glisse sous le lien de la section affichée */
+  .menu {
+    position: relative;
+  }
+
+  .menu__indicateur {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    display: block;
+    width: var(--largeur-indicateur, 0);
+    height: 2px;
+    background-color: var(--accent);
+    opacity: 0;
+    transform: translateX(var(--position-indicateur, 0));
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1), width 0.45s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .menu__indicateur.est-visible {
+    opacity: 1;
+  }
+
+  /* Section Infos & inscription affichée : le bouton Inscription se remplit */
+  .menu__lien--inscription[aria-current] {
+    background-color: var(--accent);
   }
 
   .menu__lien--inscription {
