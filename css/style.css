@@ -612,6 +612,56 @@ p {
   line-height: 1.4;
 }
 
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.pied {
+  padding-block: 28px;
+  background-color: var(--fond-sombre);
+  color: var(--texte-sur-fonce);
+}
+
+.pied__interieur {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.pied p,
+.pied__liens {
+  font-size: 0.8125rem;
+}
+
+.pied__liens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pied__liens li + li::before {
+  content: "\00B7";
+  padding-inline: 2px 6px;
+}
+
+.pied__liens a {
+  text-decoration: none;
+}
+
+.pied__liens a:hover {
+  text-decoration: underline;
+}
+
+.pied :focus-visible {
+  outline-color: var(--texte-sur-fonce);
+}
+
+.pied__interieur .pied__credits {
+  margin-top: 8px;
+  font-size: 0.75rem;
+}
+
 /* ---------- Écrans plus larges ---------- */
 @media (min-width: 600px) {
   :root {
@@ -807,6 +857,28 @@ p {
 
   .formulaire-carte__mention {
     margin-top: 20px;
+  }
+
+  /* Footer desktop : sur une ligne */
+  .pied {
+    padding-block: 32px;
+  }
+
+  .pied__interieur {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .pied p,
+  .pied__liens {
+    font-size: 0.875rem;
+  }
+
+  .pied__interieur .pied__credits {
+    flex-basis: 100%;
+    margin-top: 12px;
   }
 }
 
