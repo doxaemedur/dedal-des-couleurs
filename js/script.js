@@ -102,22 +102,37 @@
     return;
   }
 
+  /* Blocs de texte : fondu et légère montée */
   const blocs = document.querySelectorAll(
-    ".oeuvres .en-tete-section, .grille-oeuvres > li, .histoire__photo, .histoire__texte, .infos, .formulaire-carte"
+    ".oeuvres .en-tete-section, .histoire__texte, .infos, .formulaire-carte"
   );
+  /* Photos : effet rideau */
+  const photos = document.querySelectorAll(".grille-oeuvres > li, .histoire__cadre");
 
   /* Cartes d'œuvres : léger décalage d'une colonne à l'autre */
   document.querySelectorAll(".grille-oeuvres > li").forEach(function (carte, index) {
-    carte.style.setProperty("--delai", (index % 3) * 0.12 + "s");
+    carte.style.setProperty("--delai", (index % 3) * 0.15 + "s");
   });
-  document.querySelector(".histoire__texte").style.setProperty("--delai", "0.15s");
+  document.querySelector(".histoire__texte").style.setProperty("--delai", "0.3s");
   document.querySelector(".formulaire-carte").style.setProperty("--delai", "0.15s");
+
+  /* Une fois le rideau ouvert, on retire la classe pour rendre la main
+     aux effets de survol (zoom de l'image) */
+  function terminerRideau(element) {
+    const delai = parseFloat(element.style.getPropertyValue("--delai")) || 0;
+    window.setTimeout(function () {
+      element.classList.remove("rideau", "est-visible");
+    }, (delai + 1.7) * 1000);
+  }
 
   const observateur = new IntersectionObserver(function (entrees) {
     entrees.forEach(function (entree) {
       if (entree.isIntersecting) {
         entree.target.classList.add("est-visible");
         observateur.unobserve(entree.target);
+        if (entree.target.classList.contains("rideau")) {
+          terminerRideau(entree.target);
+        }
       }
     });
   }, { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
@@ -125,6 +140,10 @@
   blocs.forEach(function (bloc) {
     bloc.classList.add("revele");
     observateur.observe(bloc);
+  });
+  photos.forEach(function (photo) {
+    photo.classList.add("rideau");
+    observateur.observe(photo);
   });
   document.documentElement.classList.add("js-anim");
 })();
