@@ -17,8 +17,18 @@ fonts/         police Glacial Indifference (woff2, licence SIL OFL)
 
 ## Site en ligne
 
-Lien à venir (GitHub Pages).
+https://doxaemedur.github.io/dedal-des-couleurs/
+
+## Contrôles qualité
+
+- Validation W3C HTML (validator.w3.org/nu) : 0 erreur, 0 avertissement.
+- Validation W3C CSS (jigsaw.w3.org) : 0 erreur (2 avertissements liés aux variables CSS).
+- Lighthouse : plus de 90 dans les 4 catégories, en mobile et en desktop.
+- Aucun défilement horizontal de 320 à 1920 px.
 
 ## Crédits
 
-Photographies : Pexels.
+Photographies : Pexels (lhoang, Jean Marc Bonnel, burcubyzt_85, Elifinatlasi, Beyza Kaplan, Eusebiu Soica, Mehmet Çetinkaya, pexels-a).
+Police Glacial Indifference : licence SIL Open Font License (voir `fonts/LICENSE-OFL.txt`).
+Police Freckle Face : Google Fonts.
+Icônes : Font Awesome.
